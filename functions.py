@@ -1,7 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
 import random as rd
-import pandas as pd
 import inspect
 from functions import *
 import idx2numpy as idx
@@ -16,12 +15,12 @@ def initialize_weights(number_of_features,val=10**-2):
 
 def func(x,y,a=7,b=3):
 	# return (y/a)**2+(x/b)**2-1
-	# return y-x+1
-	return y-x**2+4
+	return y-x+1
+	# return y-x**2+4
 	# return y-5*np.sin(x/10*np.pi)
 
 #Creates the feature 
-def create_features(x1,x2,level=1):
+def create_features(x1,x2,level=0):
 	if level==0:
 		X = np.ones((len(x1),3))
 		X[:,1]=x1
@@ -46,17 +45,20 @@ def batch_grad(X_training,y_training,alpha,grad_threshold):
 	grad_w=np.full(number_of_features,11)
 	L=np.array([1,2])
 	count = 1
-	print(X_training[-5:,:])
-	while (abs(L[count]-L[count-1])>grad_threshold):
+	print(X_training.shape)
+	# while (abs(L[count]-L[count-1])>grad_threshold):
+	while (L[count]>0.01):
 		Y_training=sigmoid(np.dot(X_training,w.T))
 		grad_w=np.dot(-1*2*(y_training-Y_training).T,X_training)/data_size
 		w=w-alpha*grad_w
 		count+=1
-		val=sum(y_training*np.log(Y_training)+(1-y_training)*np.log(1-Y_training))/float(data_size)*-1
+		Y_training=sigmoid(np.dot(X_training,w.T))
+		val=sum(y_training*np.log(Y_training+0.0001)+(1-y_training)*np.log(1-Y_training+0.0001))/float(data_size)*-1
 		L=np.append(L,val)
-		useful_plots(L,count,X_training,y_training,w,inspect.getframeinfo(inspect.currentframe())[2])
-	write_plot(L,count,X_training,y_training,w,inspect.getframeinfo(inspect.currentframe())[2])	
-	return w
+		# print(val,count)
+		# if count%1000==0:
+		# 	useful_plots(L,count,X_training,y_training,w,inspect.getframeinfo(inspect.currentframe())[2])
+	# write_plot(L,count,X_training,y_training,w,inspect.getframeinfo(inspect.currentframe())[2])	
 
 def stochastic_grad(X_training,y_training,alpha,grad_threshold):
 	number_of_features=X_training.shape[1]
