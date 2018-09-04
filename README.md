@@ -1,6 +1,5 @@
 # Logistic regression
-Implemented logistic regression using stochastic gradient descent and batch gradient descent and utilized it for the following classification problems.
-
+Implemented logistic regression using stochastic gradient descent and batch gradient descent and utilized it for the following classification problems -
 1. Linearly separable datasets.
 2. Non-lineary separable datasets. Ex. an ellipse as the decision boundary.
 3. Image classification of the MNIST dataset.
